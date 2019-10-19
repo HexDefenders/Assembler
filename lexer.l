@@ -15,6 +15,7 @@ COM		"#"[^\r\n]*
 HEX		0[Xx][0-9A-Fa-f]+
 REG		[Rr][0-9]+
 IMM		[0-9]*
+END  [\n\r]
  
 %%
 
@@ -27,6 +28,7 @@ IMM		[0-9]*
 ";"		{return SEMI;}
 ","		{return COMMA;}
 "$"		{return DOL;}
+{END} {return EOL;}
 {WS}		{}
 {COM}		{}
 
