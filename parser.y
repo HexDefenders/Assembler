@@ -1,9 +1,13 @@
 %{
   #include <stdio.h>
-  void showError();
-%}
+  int yylex(void);
+  #include "helpers.h"
+  void yyerror(const char *s);
+  int pc = 1;
+  %}
 
 %output "parser.c"
+%defines "parser.h"
 
 %union {
   char *op;
@@ -11,10 +15,10 @@
 }
 
 %token <op> OPCODE
-%token HEXVAL
-%token REGISTER
-%token IMMEDIATE
-%token OPPER CLPER SEMI COMA DOL
+%token <num> HEXVAL
+%token <num> REGISTER
+%token <num> IMMEDIATE
+%token OPPER CLPER SEMI COMMA DOL
 %token EOL
 %token <op> LABEL
 %type <num> arg;
@@ -22,19 +26,16 @@
 
 %%
 
-line: 
-  | line instr EOL {toLE($1);}
-  | line LABEL EOL
-  | line LABEL instr EOL
+line:
+| line instr EOL {toLE($2); pc++;}
 ;
 
-instr: OPCODE SEMI {$$ = toHex($1, NULL, NULL);}
-  | OPCODE OPCODE SEMI
-  | OPCODE arg SEMI {$$ = toHex($1, NULL, $2);}
-  | OPCODE arg COMA arg SEMI {$$ = toHex($1, $2, $4);}
+instr: OPCODE SEMI {$$ = toHex($1, 0, 0);}
+| OPCODE arg SEMI {$$ = toHex($1, 0, $2);}
+| OPCODE arg COMMA arg SEMI {$$ = toHex($1, $2, $4);}
 ;
 
-arg: HEXVAL
-  | REGISTER
-  | DOL IMMEDIATE {$$ = $2}
+arg: HEXVAL {$$ = $1;}
+| REGISTER {$$ = $1;}
+| DOL IMMEDIATE {$$ = $2;}
 ;
