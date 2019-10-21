@@ -15,6 +15,7 @@ HEX		0[Xx][0-9A-Fa-f]+
 REG		[Rr][0-9]+
 IMM		[-]?[0-9]*
 END  [\n\r]
+LAB  [A-Za-z][0-9A-Za-z]*":"
  
 %%
 
@@ -22,6 +23,7 @@ END  [\n\r]
 {HEX}		{sscanf(yytext, "%x", &yylval.num; return HEXVAL;}
 {REG}		{yylval.num = atoi((yytext+1)); return REGISTER;}
 {IMM}		{sscanf(yytext, "%d", &yylval.num; return IMMEDIATE;}
+{LAB}  {
 "("		{return OPPER;}
 ")"		{return CLPER;}
 ";"		{return SEMI;}
