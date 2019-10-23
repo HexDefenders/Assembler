@@ -6,31 +6,39 @@
    #include "helpers.h"
 %}
 
+%x FIRST_PASS
 %option noyywrap
 %option outfile="lexer.c" header-file="lexer.h"
 
-OP         [A-Za-z]*
-WS         [ \t\r\n]*
-COM        "#"[^\r\n]*
-HEX        0[Xx][0-9A-Fa-f]+
-REG        [Rr][0-9]+
-IMM        [0-9]*
-EOL        [\r\n]
-
 %%
 
-{OP}        {yylval.op = strdup(yytext); return OPCODE;}
-{HEX}       {sscanf(yytext, "%x", &yylval.num); return HEXVAL;}
-{REG}       {yylval.num = atoi((yytext+1)); return REGISTER;}
-{IMM}       {sscanf(yytext, "%d", &yylval.num); return IMMEDIATE;}
-"("         {return OPPER;}
-")"         {return CLPER;}
-";"         {return SEMI;}
-","         {return COMMA;}
-"$"         {return DOL;}
-{EOL}       {return EOL;}
-{WS}        {}
-{COM}       {}
+%{
+if(first_enter)
+   BEGIN(FIRST_PASS);
+%}
+
+<FIRST_PASS>{
+[A-Za-z][0-9A-Za-z]*":"    {yylval.op = strdup(yytext); return LABEL;}
+[\r\n]                     {return EOL;}
+<<EOF>>                    {first_enter = 0; pc = 1; rewind(yyin); BEGIN(0); return EOP;}
+.                          {}
+}
+[A-Za-z]*               {yylval.op = strdup(yytext); return OPCODE;}
+0[Xx][0-9A-Fa-f]+       {sscanf(yytext, "%x", &yylval.num); return HEXVAL;}
+[Rr][0-9]+              {yylval.num = atoi((yytext+1)); return REGISTER;}
+[-]?[0-9]*              {sscanf(yytext, "%d", &yylval.num); return IMMEDIATE;}
+"("                     {return OPPER;}
+")"                     {return CLPER;}
+";"                     {return SEMI;}
+","                     {return COMMA;}
+"$"                     {return DOL;}
+[\r\n]                  {return EOL;}
+[ \t\r\n]*              {}
+"#"[^\r\n]*             {}
+[A-Za-z][0-9A-Za-z]*    {yylval.op = strdup(yytext); return GLAB;}
+[A-Za-z][0-9A-Za-z]*":" {}
+.                       {}
+<<EOF>>                 {yyterminate();}
 
 %%
 
