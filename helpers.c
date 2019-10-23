@@ -31,7 +31,7 @@ void holdLabel(char *op, int line){
 }
 
 void toLE(char *hexCode){
-  printf("%c%c%c%c\n", hexCode[0], hexCode[1], hexCode[2], hexCode[3]);
+  printf("%c%c%c%c\n", hexCode[2], hexCode[3], hexCode[0], hexCode[1]);
 }
 
 char iToC(int num){
