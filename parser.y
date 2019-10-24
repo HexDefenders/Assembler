@@ -46,7 +46,7 @@ instr: OPCODE SEMI {$$ = toHex($1, 0, 0);}
 | OPCODE arg COMMA arg SEMI {$$ = toHex($1, $2, $4);}
 | OPCODE lab SEMI {$$ = toHex($1, $2, 0);}
 | OPCODE lab COMMA arg SEMI {$$ = toHex($1, $2, $4);}
-| OPCODE arg COMMA lab SEMI {$$ = toHex($1, $2, $4); trigger = 1;}
+| OPCODE arg COMMA lab SEMI {trigger = 1; $$ = toHex($1, $2, $4);}
 | OPCODE lab COMMA lab SEMI {$$ = toHex($1, $2, $4);}
 ;
 lab: GLAB {$$ = needLabel($1);}
