@@ -75,9 +75,9 @@ This code forces the lexer to start in state FIRST_PASS when the integer first_e
   int num;
 }
 
-%token <op> OPCODE          OPCODE returns a char* value, along with token OPCODE
+%token <op> OPCODE          OPCODE has a char* value associated with the OPCODE token
 %token EOP                  EOP does not have any variable value attached, so doesn't need a <type> declaration
-%type <num> lab;            The grammer type instr returns a <num> value
+%type <num> lab;            The grammer type lab returns a <num> value
 ```
 Grammer rules that return a value must also be declared to have a type, as seen in the last line of the above code. Grammer rules can be recursive when matching multiple lines of similar structures, and can call other grammer rules. For example,
 ```
