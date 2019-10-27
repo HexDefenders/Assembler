@@ -32,7 +32,7 @@
 %start first
 
 %%
-first: search EOP line {pc = 1;}
+first: search EOP line
 ;
 line: 
 | line EOL {pc++;}
