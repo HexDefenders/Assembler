@@ -35,6 +35,7 @@
 first: search EOP line {pc = 1;}
 ;
 line: 
+| line EOL {pc++;}
 | line instr EOL {toLE($2); pc++;}
 ;
 search: {pc = 1;}
