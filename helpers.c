@@ -19,6 +19,7 @@ int needLabel(char *op){
       return heldLoc[k].location;
     }
   }
+  free(check);
   return 0;
 }
 
@@ -31,7 +32,7 @@ void holdLabel(char *op, int line){
 }
 
 void toLE(char *hexCode){
-  printf("%c%c%c%c\n", hexCode[2], hexCode[3], hexCode[0], hexCode[1]);
+  printf("%c%c%c%c\n", hexCode[0], hexCode[1], hexCode[2], hexCode[3]);
 }
 
 char iToC(int num){
@@ -56,8 +57,17 @@ char iToC(int num){
   return '0';
 }
 
-char* toHex(char *op, int src, int dest){
+char* toHex(char *inOp, int src, int dest){
   char imm[20];
+  
+  //allows for upper or lowercase op codes
+  int a = strlen(inOp);
+  int i;
+  char *op;
+  op = (char*)malloc(a);
+  strcpy(op, inOp);
+  for(i = 0; i < a; i++)
+    op[i] = toupper((unsigned char)op[i]);
   char opcode;
   char rDest;
   char immHi;
@@ -199,11 +209,12 @@ char* toHex(char *op, int src, int dest){
   else if(strcmp(op, "LSHI") == 0) {
     opcode = '8';
     rDest = iToC(dest);
-    immLo = iToC(src);
     if(src >= 0){
-      immHi = 0;
+      immHi = '0';
+      immLo = iToC(src);
     } else {
-      immHi = 1;
+      immHi = '1';
+      immLo = iToC(-src);
     }
   }
   else if(strcmp(op, "LSH") == 0) {
@@ -215,14 +226,14 @@ char* toHex(char *op, int src, int dest){
   else if(strcmp(op, "LUI") == 0) {
     opcode = 'f';
     rDest = iToC(dest);
-    if(src < 16 && src >= 0){
-      immHi = '0';
-      immLo = iToC(src);
-    } else {
-      sprintf(imm, "%x", src);
-      int a = strlen(imm)-1;
-      immHi = imm[a-1];
-      immLo = imm[a];
+    if(dest < 16 && dest >= 0){
+        immHi = '0';
+        immLo = iToC(dest);
+      } else {
+        sprintf(imm, "%x", dest);
+        int a = strlen(imm)-1;
+        immHi = imm[a-1];
+        immLo = imm[a];
     }
   }
   else if(strcmp(op, "LOAD") == 0) {
@@ -637,6 +648,7 @@ char* toHex(char *op, int src, int dest){
       unsigned int upper = (src >> 8) & 0xff;
       toLE(toHex("MOVI", lower, 1));
       toLE(toHex("LUI", upper, 1));
+      pc = pc + 2;
       immLo = '1';
     }
     rDest = '0';
@@ -651,6 +663,7 @@ char* toHex(char *op, int src, int dest){
       unsigned int upper = (src >> 8) & 0xff;
       toLE(toHex("MOVI", lower, 1));
       toLE(toHex("LUI", upper, 1));
+      pc = pc + 2;
       immLo = '1';
     }
     rDest = '1';
@@ -665,6 +678,7 @@ char* toHex(char *op, int src, int dest){
       unsigned int upper = (src >> 8) & 0xff;
       toLE(toHex("MOVI", lower, 1));
       toLE(toHex("LUI", upper, 1));
+      pc = pc + 2;
       immLo = '1';
     }
     rDest = 'd';
@@ -679,6 +693,7 @@ char* toHex(char *op, int src, int dest){
       unsigned int upper = (src >> 8) & 0xff;
       toLE(toHex("MOVI", lower, 1));
       toLE(toHex("LUI", upper, 1));
+      pc = pc + 2;
       immLo = '1';
     }
     rDest = '2';
@@ -693,6 +708,7 @@ char* toHex(char *op, int src, int dest){
       unsigned int upper = (src >> 8) & 0xff;
       toLE(toHex("MOVI", lower, 1));
       toLE(toHex("LUI", upper, 1));
+      pc = pc + 2;
       immLo = '1';
     }
     rDest = '3';
@@ -707,6 +723,7 @@ char* toHex(char *op, int src, int dest){
       unsigned int upper = (src >> 8) & 0xff;
       toLE(toHex("MOVI", lower, 1));
       toLE(toHex("LUI", upper, 1));
+      pc = pc + 2;
       immLo = '1';
     }
     rDest = '4';
@@ -721,6 +738,7 @@ char* toHex(char *op, int src, int dest){
       unsigned int upper = (src >> 8) & 0xff;
       toLE(toHex("MOVI", lower, 1));
       toLE(toHex("LUI", upper, 1));
+      pc = pc + 2;
       immLo = '1';
     }
     rDest = '5';
@@ -735,6 +753,7 @@ char* toHex(char *op, int src, int dest){
       unsigned int upper = (src >> 8) & 0xff;
       toLE(toHex("MOVI", lower, 1));
       toLE(toHex("LUI", upper, 1));
+      pc = pc + 2;
       immLo = '1';
     }
     rDest = 'a';
@@ -749,6 +768,7 @@ char* toHex(char *op, int src, int dest){
       unsigned int upper = (src >> 8) & 0xff;
       toLE(toHex("MOVI", lower, 1));
       toLE(toHex("LUI", upper, 1));
+      pc = pc + 2;
       immLo = '1';
     }
     rDest = 'b';
@@ -777,6 +797,7 @@ char* toHex(char *op, int src, int dest){
       unsigned int upper = (src >> 8) & 0xff;
       toLE(toHex("MOVI", lower, 1));
       toLE(toHex("LUI", upper, 1));
+      pc = pc + 2;
       immLo = '1';
     }
     rDest = '7';
@@ -805,6 +826,7 @@ char* toHex(char *op, int src, int dest){
       unsigned int upper = (src >> 8) & 0xff;
       toLE(toHex("MOVI", lower, 1));
       toLE(toHex("LUI", upper, 1));
+      pc = pc + 2;
       immLo = '1';
     }
     rDest = '9';
@@ -819,6 +841,7 @@ char* toHex(char *op, int src, int dest){
       unsigned int upper = (src >> 8) & 0xff;
       toLE(toHex("MOVI", lower, 1));
       toLE(toHex("LUI", upper, 1));
+      pc = pc + 2;
       immLo = '1';
     }
     rDest = 'c';
@@ -833,6 +856,7 @@ char* toHex(char *op, int src, int dest){
       unsigned int upper = (src >> 8) & 0xff;
       toLE(toHex("MOVI", lower, 1));
       toLE(toHex("LUI", upper, 1));
+      pc = pc + 2;
       immLo = '1';
     }
     rDest = 'e';
@@ -846,6 +870,7 @@ char* toHex(char *op, int src, int dest){
       unsigned int upper = (src >> 8) & 0xff;
       toLE(toHex("MOVI", lower, 1));
       toLE(toHex("LUI", upper, 1));
+      pc = pc + 2;
       immLo = '1';
       trigger = 0;
     } else
@@ -858,6 +883,6 @@ char* toHex(char *op, int src, int dest){
   hexCode[2] = immHi;
   hexCode[3] = immLo;
   char *cp = hexCode;
-
+  free(op);
   return cp;
 }
