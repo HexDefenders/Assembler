@@ -10,12 +10,19 @@ int main(int argc, char* argv[])
 {
   FILE *outFile;
   yyin = fopen("input.txt", "r");
-  outFile = fopen("output.txt" , "a");
+  outFile = fopen("test.dat" , "a");
   
   //yydebug = 1;
   dup2(fileno(outFile),1);
   yyparse();
+   
+  int i = pc;
+  const int MEMSIZE = 4000;
+  char *zeros = "0000";
 
+  for(i; i < MEMSIZE; i++)
+    printf("%s\n", zeros);
+  
   fclose(yyin);
   fclose(outFile);
   return 0;
