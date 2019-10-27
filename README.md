@@ -40,7 +40,7 @@ L1: ADDI 0x2a, R2;   %L1: as a label declaration
     SUB R2, R4;
     JLE L1;          %L1 as a label call
 ```
-Label addresses can be up to four bytes long. In this case, the full value of the address will be contained in the register R1 to be read. Any value previously inside R1 will be re-written.
+Label declarations can also be on their own line, with the associated operation encoding beginning on the line below. Label addresses can be up to four bytes long. In this case, the full value of the address will be contained in the register R1 to be read. Any value previously inside R1 will be over-written.
 
 ## The Files
 ### lexer.l
@@ -88,12 +88,12 @@ arg: HEXVAL   {$$ = $1} //This is the default rule. returns the value assigned t
 ```
 instr will search for an OPCODE, then either a HEXVAL or REGISTER, before returning to instr and search for a SEMI. Once this pattern is satisfied, it will return to whatever called instr.
 
-As stated previously, rules can have return values. These return values are denoted by $$. Unless stated otherwise, the return value is set to $$ = $1, where $1 is the first token in the line, whether it be a called rule's returned value or a defined token. The grammer rule will be returned to it's called rule after the last token of the line is matched. The only rule that doesn't follow this is the starting rule, which will only terminate when the end of the input is reached.
+As stated previously, rules can have return values. These return values are denoted by $$. Unless stated otherwise, the return value is set to $$ = $1, where $1 is the first token in the line. This can be a called rule's returned value, or a defined token. The grammer rule will be returned to it's called rule after the last token of the line is matched. The only rule that doesn't follow this is the starting rule, which will only terminate when the end of the input is reached.
 
 ### helpers.c, helpers.h
-Contained in this file are the C helper functions for the parser. toHex(char*,int,int) returns the hex value of a line as a string, and toLE(char*) prints it in little-endian format. holdLabel(char*, int) is used when defining labels on the first pass, keeping an array of struts that hold the label's name and program counter number. needLabel(char*) is used when calling a label, and searches through the array of structs to find it's matching label declaration, and returns the program counter value of the declared label. 
+Contained in this file are the C helper functions for the parser. toHex(char*,int,int) returns the hex value of a line as a string, and toLE(char*) prints it in little-endian format. holdLabel(char*, int) is used when defining labels on the first pass, keeping an array of struts that hold the label's name and program counter number. needLabel(char*) is used when calling a label, and searches through the array of structs to find it's matching label declaration, and returns the program counter value of the declared label. upperOp(char*) is used to change the given Op code to all upper-case, which allows for the programmer to pass in opcodes of any case.
 
 helpers.h is the header file for the helper functions, and declares extern variables used across all the files (like the program counter integer).
 
 ### main.c
-The main file. This is where yyparse (the call that stars the parser and lexer) is called, and where the name of the input and output files is declared. Also where output is rerounted from the terminal to the output file.
+The main file. This is where yyparse (the call that stars the parser and lexer) is called, and where the name of the input and output files is declared. Also where output is rerounted from the terminal to the output file. Finally, main.c is where we fill the rest of the output file with zeros, so ensure the processer can correctly run the code.
