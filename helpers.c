@@ -133,7 +133,7 @@ char* toHex(char *inOp, int src, int dest){
   else if(strcmp(op, "ANDI") == 0) {
     opcode = '1';
     rDest = iToC(dest);
-    if(src < 16){
+    if(src < 16 && src >= 0){
       immHi = '0';
       immLo = iToC(src);
     } else {
@@ -152,7 +152,7 @@ char* toHex(char *inOp, int src, int dest){
   else if(strcmp(op, "ORI") == 0) {
     opcode = '2';
     rDest = iToC(dest);
-    if(src < 16){
+    if(src < 16 && src >= 0){
       immHi = '0';
       immLo = iToC(src);
     } else {
@@ -171,7 +171,7 @@ char* toHex(char *inOp, int src, int dest){
   else if(strcmp(op, "XORI") == 0) {
     opcode = '3';
     rDest = iToC(dest);
-    if(src < 16){
+    if(src < 16 && src >= 0){
       immHi = '0';
       immLo = iToC(src);
     } else {
@@ -190,7 +190,7 @@ char* toHex(char *inOp, int src, int dest){
   else if(strcmp(op, "MOVI") == 0) {
     opcode = 'd';
     rDest = iToC(dest);
-    if(src < 16){
+    if(src < 16 && src >= 0){
       immHi = '0';
       immLo = iToC(src);
     } else {
