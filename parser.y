@@ -34,8 +34,8 @@
 %%
 first: search EOP line
 ;
-line: 
-| line EOL {pc++;}
+line: {pc = 1;}
+| line EOL {}
 | line instr EOL {toLE($2); pc++;}
 ;
 search: {pc = 1;}
@@ -51,6 +51,7 @@ instr: OPCODE SEMI {$$ = toHex($1, 0, 0);}
 | OPCODE lab COMMA lab SEMI {$$ = toHex($1, $2, $4);}
 ;
 lab: GLAB {$$ = needLabel($1);}
+| OPCODE {$$ = needLabel($1);}
 ;
 arg: HEXVAL {$$ = $1;}
 | REGISTER {$$ = $1;}
