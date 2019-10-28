@@ -32,7 +32,7 @@ void holdLabel(char *op, int line){
 }
 
 void toLE(char *hexCode){
-  printf("%c%c%c%c\n", hexCode[0], hexCode[1], hexCode[2], hexCode[3]);
+  printf("%c%c%c%c\n", hexCode[2], hexCode[3], hexCode[0], hexCode[1]);
 }
 
 char iToC(int num){
@@ -226,11 +226,11 @@ char* toHex(char *inOp, int src, int dest){
   else if(strcmp(op, "LUI") == 0) {
     opcode = 'f';
     rDest = iToC(dest);
-    if(src < 16 && src >= 0){
+    if(dest < 16 && dest >= 0){
         immHi = '0';
-        immLo = iToC(src);
+        immLo = iToC(dest);
       } else {
-        sprintf(imm, "%x", src);
+        sprintf(imm, "%x", dest);
         int a = strlen(imm)-1;
         immHi = imm[a-1];
         immLo = imm[a];
@@ -238,20 +238,20 @@ char* toHex(char *inOp, int src, int dest){
   }
   else if(strcmp(op, "LOAD") == 0) {
     opcode = '4';
-    rDest = iToC(src);
+    rDest = iToC(dest);
     immHi = '0';
-    immLo = iToC(dest);
+    immLo = iToC(src);
   }
   else if(strcmp(op, "STOR") == 0) {
     opcode = '4';
-    rDest = iToC(src);
+    rDest = iToC(dest);
     immHi = '4';
-    immLo = iToC(dest);
+    immLo = iToC(src);
   }
   else if(strcmp(op, "BEQ") == 0) {
     opcode = 'c';
     rDest = '0';
-    if(!trigger){
+    if(dest != 0){
       if(dest < 16 && dest >= 0){
         immHi = '0';
         immLo = iToC(dest);
@@ -272,13 +272,12 @@ char* toHex(char *inOp, int src, int dest){
         immHi = imm[a-1];
         immLo = imm[a];
       }
-      trigger = 0;
     }      
   }
   else if(strcmp(op, "BNE") == 0) {
     opcode = 'c';
     rDest = '1';
-    if(!trigger){
+    if(dest){
       if(dest < 16 && dest >= 0){
         immHi = '0';
         immLo = iToC(dest);
@@ -299,13 +298,12 @@ char* toHex(char *inOp, int src, int dest){
         immHi = imm[a-1];
         immLo = imm[a];
       }
-      trigger = 0;
     }
   }
   else if(strcmp(op, "BGE") == 0) {
     opcode = 'c';
     rDest = 'd';
-    if(!trigger){
+    if(dest){
       if(dest < 16 && dest >= 0){
         immHi = '0';
         immLo = iToC(dest);
@@ -326,13 +324,12 @@ char* toHex(char *inOp, int src, int dest){
         immHi = imm[a-1];
         immLo = imm[a];
       }
-      trigger = 0;
     }
   }
   else if(strcmp(op, "BCS") == 0) {
     opcode = 'c';
     rDest = '2';
-    if(!trigger){
+    if(dest){
       if(dest < 16 && dest >= 0){
         immHi = '0';
         immLo = iToC(dest);
@@ -353,13 +350,12 @@ char* toHex(char *inOp, int src, int dest){
         immHi = imm[a-1];
         immLo = imm[a];
       }
-      trigger = 0;
     }
   }
   else if(strcmp(op, "BCC") == 0) {
     opcode = 'c';
     rDest = '3';
-    if(!trigger){
+    if(dest){
       if(dest < 16 && dest >= 0){
         immHi = '0';
         immLo = iToC(dest);
@@ -380,13 +376,12 @@ char* toHex(char *inOp, int src, int dest){
         immHi = imm[a-1];
         immLo = imm[a];
       }
-      trigger = 0;
     }
   }
   else if(strcmp(op, "BHI") == 0) {
     opcode = 'c';
     rDest = '4';
-    if(!trigger){
+    if(dest){
       if(dest < 16 && dest >= 0){
         immHi = '0';
         immLo = iToC(dest);
@@ -407,13 +402,12 @@ char* toHex(char *inOp, int src, int dest){
         immHi = imm[a-1];
         immLo = imm[a];
       }
-      trigger = 0;
     }
   }
   else if(strcmp(op, "BLS") == 0) {
     opcode = 'c';
     rDest = '5';
-    if(!trigger){
+    if(dest){
       if(dest < 16 && dest >= 0){
         immHi = '0';
         immLo = iToC(dest);
@@ -434,13 +428,12 @@ char* toHex(char *inOp, int src, int dest){
         immHi = imm[a-1];
         immLo = imm[a];
       }
-      trigger = 0;
     }
   }
   else if(strcmp(op, "BLO") == 0) {
     opcode = 'c';
     rDest = 'a';
-    if(!trigger){
+    if(dest){
       if(dest < 16 && dest >= 0){
         immHi = '0';
         immLo = iToC(dest);
@@ -461,13 +454,12 @@ char* toHex(char *inOp, int src, int dest){
         immHi = imm[a-1];
         immLo = imm[a];
       }
-      trigger = 0;
     }
   }
   else if(strcmp(op, "BHS") == 0) {
     opcode = 'c';
     rDest = 'b';
-    if(!trigger){
+    if(dest){
       if(dest < 16 && dest >= 0){
         immHi = '0';
         immLo = iToC(dest);
@@ -488,13 +480,12 @@ char* toHex(char *inOp, int src, int dest){
         immHi = imm[a-1];
         immLo = imm[a];
       }
-      trigger = 0;
     }
   }
   else if(strcmp(op, "BGT") == 0) {
     opcode = 'c';
     rDest = '6';
-    if(!trigger){
+    if(dest){
       if(dest < 16 && dest >= 0){
         immHi = '0';
         immLo = iToC(dest);
@@ -515,13 +506,12 @@ char* toHex(char *inOp, int src, int dest){
         immHi = imm[a-1];
         immLo = imm[a];
       }
-      trigger = 0;
     }
   }
   else if(strcmp(op, "BLE") == 0) {
     opcode = 'c';
     rDest = '7';
-    if(!trigger){
+    if(dest){
       if(dest < 16 && dest >= 0){
         immHi = '0';
         immLo = iToC(dest);
@@ -542,13 +532,12 @@ char* toHex(char *inOp, int src, int dest){
         immHi = imm[a-1];
         immLo = imm[a];
       }
-      trigger = 0;
     }
   }
   else if(strcmp(op, "BFS") == 0) {
     opcode = 'c';
     rDest = '8';
-    if(!trigger){
+    if(dest){
       if(dest < 16 && dest >= 0){
         immHi = '0';
         immLo = iToC(dest);
@@ -569,13 +558,12 @@ char* toHex(char *inOp, int src, int dest){
         immHi = imm[a-1];
         immLo = imm[a];
       }
-      trigger = 0;
     }
   }
   else if(strcmp(op, "BFC") == 0) {
     opcode = 'c';
     rDest = '9';
-    if(!trigger){
+    if(dest){
       if(dest < 16 && dest >= 0){
         immHi = '0';
         immLo = iToC(dest);
@@ -596,13 +584,12 @@ char* toHex(char *inOp, int src, int dest){
         immHi = imm[a-1];
         immLo = imm[a];
       }
-      trigger = 0;
     }
   }
   else if(strcmp(op, "BLT") == 0) {
     opcode = 'c';
     rDest = 'c';
-    if(!trigger){
+    if(dest){
       if(dest < 16 && dest >= 0){
         immHi = '0';
         immLo = iToC(dest);
@@ -623,13 +610,12 @@ char* toHex(char *inOp, int src, int dest){
         immHi = imm[a-1];
         immLo = imm[a];
       }
-      trigger = 0;
     }
   }
   else if(strcmp(op, "BUC") == 0) {
     opcode = 'c';
     rDest = 'e';
-    if(!trigger){
+    if(dest){
       if(dest < 16 && dest >= 0){
         immHi = '0';
         immLo = iToC(dest);
@@ -650,13 +636,12 @@ char* toHex(char *inOp, int src, int dest){
         immHi = imm[a-1];
         immLo = imm[a];
       }
-      trigger = 0;
     }
   }
   else if(strcmp(op, "JEQ") == 0) {
     opcode = '4';
     immHi = 'c';
-    if (!trigger)
+    if (dest)
       immLo = iToC(dest);
     else {
       unsigned int lower = src & 0xff;
@@ -665,14 +650,13 @@ char* toHex(char *inOp, int src, int dest){
       toLE(toHex("LUI", upper, 1));
       pc = pc + 2;
       immLo = '1';
-      trigger = 0;
     }
     rDest = '0';
   }
   else if(strcmp(op, "JNE") == 0) {
     opcode = '4';
     immHi = 'c';
-    if (!trigger)
+    if (dest)
       immLo = iToC(dest);
     else {
       unsigned int lower = src & 0xff;
@@ -681,14 +665,13 @@ char* toHex(char *inOp, int src, int dest){
       toLE(toHex("LUI", upper, 1));
       pc = pc + 2;
       immLo = '1';
-      trigger = 0;
     }
     rDest = '1';
   }
   else if(strcmp(op, "JGE") == 0) {
     opcode = '4';
     immHi = 'c';
-    if (!trigger)
+    if (dest)
       immLo = iToC(dest);
     else {
       unsigned int lower = src & 0xff;
@@ -697,14 +680,13 @@ char* toHex(char *inOp, int src, int dest){
       toLE(toHex("LUI", upper, 1));
       pc = pc + 2;
       immLo = '1';
-      trigger = 0;
     }
     rDest = 'd';
   }
   else if(strcmp(op, "JCS") == 0) {
     opcode = '4';
     immHi = 'c';
-    if (!trigger)
+    if (dest)
       immLo = iToC(dest);
     else {
       unsigned int lower = src & 0xff;
@@ -713,14 +695,13 @@ char* toHex(char *inOp, int src, int dest){
       toLE(toHex("LUI", upper, 1));
       pc = pc + 2;
       immLo = '1';
-      trigger = 0;
     }
     rDest = '2';
   }
   else if(strcmp(op, "JCC") == 0) {
     opcode = '4';
     immHi = 'c';
-    if (!trigger)
+    if (dest)
       immLo = iToC(dest);
     else {
       unsigned int lower = src & 0xff;
@@ -729,14 +710,13 @@ char* toHex(char *inOp, int src, int dest){
       toLE(toHex("LUI", upper, 1));
       pc = pc + 2;
       immLo = '1';
-      trigger = 0;
     }
     rDest = '3';
   }
   else if(strcmp(op, "JHI") == 0) {
     opcode = '4';
     immHi = 'c';
-    if (!trigger)
+    if (dest)
       immLo = iToC(dest);
     else {
       unsigned int lower = src & 0xff;
@@ -745,14 +725,13 @@ char* toHex(char *inOp, int src, int dest){
       toLE(toHex("LUI", upper, 1));
       pc = pc + 2;
       immLo = '1';
-      trigger = 0;
     }
     rDest = '4';
   }
   else if(strcmp(op, "JLS") == 0) {
     opcode = '4';
     immHi = 'c';
-    if (!trigger)
+    if (dest)
       immLo = iToC(dest);
     else {
       unsigned int lower = src & 0xff;
@@ -761,14 +740,13 @@ char* toHex(char *inOp, int src, int dest){
       toLE(toHex("LUI", upper, 1));
       pc = pc + 2;
       immLo = '1';
-      trigger = 0;
     }
     rDest = '5';
   }
   else if(strcmp(op, "JLO") == 0) {
     opcode = '4';
     immHi = 'c';
-    if (!trigger)
+    if (dest)
       immLo = iToC(dest);
     else {
       unsigned int lower = src & 0xff;
@@ -777,14 +755,13 @@ char* toHex(char *inOp, int src, int dest){
       toLE(toHex("LUI", upper, 1));
       pc = pc + 2;
       immLo = '1';
-      trigger = 0;
     }
     rDest = 'a';
   }
   else if(strcmp(op, "JHS") == 0) {
     opcode = '4';
     immHi = 'c';
-    if (!trigger)
+    if (dest)
       immLo = iToC(dest);
     else {
       unsigned int lower = src & 0xff;
@@ -793,14 +770,13 @@ char* toHex(char *inOp, int src, int dest){
       toLE(toHex("LUI", upper, 1));
       pc = pc + 2;
       immLo = '1';
-      trigger = 0;
     }
     rDest = 'b';
   }
   else if(strcmp(op, "JGT") == 0) {
     opcode = '4';
     immHi = 'c';
-    if (!trigger)
+    if (dest)
       immLo = iToC(dest);
     else {
       unsigned int lower = src & 0xff;
@@ -808,14 +784,13 @@ char* toHex(char *inOp, int src, int dest){
       toLE(toHex("MOVI", lower, 1));
       toLE(toHex("LUI", upper, 1));
       immLo = '1';
-      trigger = 0;
     }
     rDest = '6';
   }
   else if(strcmp(op, "JLE") == 0) {
     opcode = '4';
     immHi = 'c';
-    if (!trigger)
+    if (dest)
       immLo = iToC(dest);
     else {
       unsigned int lower = src & 0xff;
@@ -824,14 +799,13 @@ char* toHex(char *inOp, int src, int dest){
       toLE(toHex("LUI", upper, 1));
       pc = pc + 2;
       immLo = '1';
-      trigger = 0;
     }
     rDest = '7';
   }
   else if(strcmp(op, "JFS") == 0) {
     opcode = '4';
     immHi = 'c';
-    if (!trigger)
+    if (dest)
       immLo = iToC(dest);
     else {
       unsigned int lower = src & 0xff;
@@ -839,14 +813,13 @@ char* toHex(char *inOp, int src, int dest){
       toLE(toHex("MOVI", lower, 1));
       toLE(toHex("LUI", upper, 1));
       immLo = '1';
-      trigger = 0;
     }
     rDest = '8';
   }
   else if(strcmp(op, "JFC") == 0) {
     opcode = '4';
     immHi = 'c';
-    if (!trigger)
+    if (dest)
       immLo = iToC(dest);
     else {
       unsigned int lower = src & 0xff;
@@ -855,14 +828,13 @@ char* toHex(char *inOp, int src, int dest){
       toLE(toHex("LUI", upper, 1));
       pc = pc + 2;
       immLo = '1';
-      trigger = 0;
     }
     rDest = '9';
   }
   else if(strcmp(op, "JLT") == 0) {
     opcode = '4';
     immHi = 'c';
-    if (!trigger)
+    if (dest)
       immLo = iToC(dest);
     else {
       unsigned int lower = src & 0xff;
@@ -871,14 +843,13 @@ char* toHex(char *inOp, int src, int dest){
       toLE(toHex("LUI", upper, 1));
       pc = pc + 2;
       immLo = '1';
-      trigger = 0;
     }
     rDest = 'c';
   }
   else if(strcmp(op, "JUC") == 0) {
     opcode = '4';
     immHi = 'c';
-    if (!trigger)
+    if (dest)
       immLo = iToC(dest);
     else {
       unsigned int lower = src & 0xff;
@@ -887,7 +858,6 @@ char* toHex(char *inOp, int src, int dest){
       toLE(toHex("LUI", upper, 1));
       pc = pc + 2;
       immLo = '1';
-      trigger = 0;
     }
     rDest = 'e';
   }
