@@ -39,8 +39,10 @@ line: {pc = 1;}
 | line instr EOL {toLE($2); pc++;}
 ;
 search: {pc = 1;}
-| search LABEL EOL {holdLabel($2, pc); pc++;}
-| search EOL {pc++;}
+| search LABEL EOL {holdLabel($2, pc);}
+| search SEMI EOL {pc++;}
+| search EOL
+| search LABEL SEMI EOL {pc++;}
 ;
 instr: OPCODE SEMI {$$ = toHex($1, 0, 0);}
 | OPCODE arg SEMI {$$ = toHex($1, 0, $2);}

@@ -28,11 +28,12 @@ void holdLabel(char *op, int line){
   lab.name = op;
   lab.location = line;
   heldLoc[j] = lab;
+  printf("LABEL: %s, LINE: %d\n", lab.name, lab.location);
   j++;
 }
 
 void toLE(char *hexCode){
-  printf("%c%c%c%c\n", hexCode[2], hexCode[3], hexCode[0], hexCode[1]);
+  printf("%c%c%c%c\n", hexCode[0], hexCode[1], hexCode[2], hexCode[3]);
 }
 
 char iToC(int num){

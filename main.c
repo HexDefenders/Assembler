@@ -17,10 +17,11 @@ int main(int argc, char* argv[])
   yyparse();
    
   int i = pc;
-  const int MEMSIZE = 4000;
+  const int MEMSIZE = 32;
   char *zeros = "0000";
+  //printf("%d\n", i);
 
-  for(i; i < MEMSIZE; i++)
+  for(i; i <= MEMSIZE; i++)
     printf("%s\n", zeros);
   
   fclose(yyin);
