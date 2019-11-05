@@ -20,6 +20,7 @@ if(first_enter)
 <FIRST_PASS>{
 [A-Za-z][0-9A-Za-z]*":"    {yylval.op = strdup(yytext); return LABEL;}
 [\r\n]+                    {return EOL;}
+";"                        {return SEMI;}
 <<EOF>>                    {first_enter = 0; pc = 1; rewind(yyin); BEGIN(0); return EOP;}
 .                          {}
 }
