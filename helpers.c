@@ -28,7 +28,6 @@ void holdLabel(char *op, int line){
   lab.name = op;
   lab.location = line;
   heldLoc[j] = lab;
-  printf("LABEL: %s, LINE: %d\n", lab.name, lab.location);
   j++;
 }
 
