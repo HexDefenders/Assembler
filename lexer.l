@@ -35,7 +35,7 @@ if(first_enter)
 "$"                     {return DOL;}
 [\r\n]                  {return EOL;}
 [ \t]*                  {}
-"#"[^\r\n]*             {}
+"#".*             {}
 [A-Za-z][0-9A-Za-z]*    {yylval.op = strdup(yytext); return GLAB;}
 [A-Za-z][0-9A-Za-z]*":" {}
 .                       {}
