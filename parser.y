@@ -21,7 +21,7 @@
 %token <num> HEXVAL
 %token <num> REGISTER
 %token <num> IMMEDIATE
-%token OPPER CLPER SEMI COMMA DOL
+%token SEMI COMMA DOL
 %token EOL
 %token EOP
 %token <op> GLAB
@@ -40,9 +40,18 @@ line: {pc = 1;}
 ;
 search: {pc = 1;}
 | search LABEL EOL {holdLabel($2, pc);}
-| search SEMI EOL {pc++;}
+| search fill SEMI EOL {pc++;}
 | search EOL
-| search LABEL SEMI EOL {pc++;}
+| search LABEL fill SEMI EOL {holdLabel($2, pc); pc++;}
+;
+fill: OPCODE {}
+| OPCODE copyarg {}
+| OPCODE copyarg COMMA copyarg {}
+| OPCODE copyval {checkJump($1);}
+;
+copyarg: HEXVAL {} | REGISTER {} | DOL IMMEDIATE {}
+;
+copyval: GLAB {} | OPCODE {}
 ;
 instr: OPCODE SEMI {$$ = toHex($1, 0, 0);}
 | OPCODE arg SEMI {$$ = toHex($1, 0, $2);}

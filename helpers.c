@@ -7,6 +7,14 @@ int j = 0;
 
 struct Label heldLoc[100];
 
+void checkJump(char *op){
+  //printf("GOTHERE, PC = %d, Opcode = %s | ", pc, op);
+  if(op[0] == 'j' || op[0] == 'J') {
+    pc = pc + 2;
+}
+ //printf("NEW PC = %d\n", pc);
+}
+
 int needLabel(char *op){
   int len = strlen(op);
   char *check = malloc(len+2);
@@ -28,6 +36,7 @@ void holdLabel(char *op, int line){
   lab.name = op;
   lab.location = line;
   heldLoc[j] = lab;
+  //printf("LABEL: %s, ROW: %d\n", lab.name, lab.location);
   j++;
 }
 

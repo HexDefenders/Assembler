@@ -8,6 +8,7 @@ extern struct Label heldLoc[];
 extern int pc;
 extern int first_enter;
 
+void checkJump(char *);
 void toLE(char *);
 char iToC(int);
 char* toHex(char *, int, int);
