@@ -4,7 +4,7 @@
   #define YYDEBUG 1
   int yylex(void);
   void yyerror(const char *s);
-  int pc = 1;
+  int pc = 0;
   int trigger = 0;
   %}
 
@@ -34,11 +34,11 @@
 %%
 first: search EOP line
 ;
-line: {pc = 1;}
+line: {pc = 0;}
 | line EOL {}
 | line instr EOL {toLE($2); pc++;}
 ;
-search: {pc = 1;}
+search: {pc = 0;}
 | search LABEL EOL {holdLabel($2, pc);}
 | search fill SEMI EOL {pc++;}
 | search EOL
