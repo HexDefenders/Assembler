@@ -31,7 +31,7 @@ if(first_enter)
 [A-Za-z][0-9A-Za-z]*    {yylval.op = strdup(yytext); return GLAB;}
 [A-Za-z][0-9A-Za-z]*":" {yylval.op = strdup(yytext); return LABEL;}
 .                       {}
-<<EOF>>                    {first_enter = 0; pc = 1; rewind(yyin); BEGIN(0); return EOP;}
+<<EOF>>                    {first_enter = 0; pc = 0; rewind(yyin); BEGIN(0); return EOP;}
 }
 [A-Za-z]*               {yylval.op = strdup(yytext); return OPCODE;}
 0[Xx][0-9A-Fa-f]+       {sscanf(yytext, "%x", &yylval.num); return HEXVAL;}
