@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
   yyparse();
    
   int i = pc;
-  const int MEMSIZE = 32;
+  const int MEMSIZE = 256;
   char *zeros = "0000";
   //printf("%d\n", i);
 
