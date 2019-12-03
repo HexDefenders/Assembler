@@ -48,6 +48,7 @@ fill: OPCODE {}
 | OPCODE copyarg {}
 | OPCODE copyarg COMMA copyarg {}
 | OPCODE copyval {checkJump($1);}
+| OPCODE copyarg COMMA copyval {}
 ;
 copyarg: HEXVAL {} | REGISTER {} | DOL IMMEDIATE {}
 ;
