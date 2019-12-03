@@ -21,6 +21,7 @@
 %token <num> HEXVAL
 %token <num> REGISTER
 %token <num> IMMEDIATE
+%token <op> DATALAB
 %token SEMI COMMA DOL
 %token EOL
 %token EOP
@@ -36,6 +37,7 @@ first: search EOP line
 ;
 line: {pc = 0;}
 | line EOL {}
+| line DATALAB arg SEMI EOL {}
 | line instr EOL {toLE($2); pc++;}
 ;
 search: {pc = 0;}
@@ -49,8 +51,9 @@ fill: OPCODE {}
 | OPCODE copyarg COMMA copyarg {}
 | OPCODE copyval {checkJump($1);}
 | OPCODE copyarg COMMA copyval {}
+| DATALAB HEXVAL {setdata($1, $2);}
 ;
-copyarg: HEXVAL {} | REGISTER {} | DOL IMMEDIATE {}
+copyarg: HEXVAL {} | REGISTER {} | DOL IMMEDIATE {} | DATALAB {}
 ;
 copyval: GLAB {} | OPCODE {}
 ;
@@ -68,4 +71,5 @@ lab: GLAB {$$ = needLabel($1);}
 arg: HEXVAL {$$ = $1;}
 | REGISTER {$$ = $1;}
 | DOL IMMEDIATE {$$ = $2;}
+| DATALAB {$$ = getaddr($1);}
 ;
