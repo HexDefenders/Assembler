@@ -4,8 +4,10 @@
 #include "helpers.h"
 
 int j = 0;
+int n = 0;
 
 struct Label heldLoc[100];
+struct Label dataHold[50];
 
 void checkJump(char *op){
   //printf("GOTHERE, PC = %d, Opcode = %s | ", pc, op);
@@ -13,6 +15,34 @@ void checkJump(char *op){
     pc = pc + 2;
 }
  //printf("NEW PC = %d\n", pc);
+}
+
+int getaddr(char *lab){
+  //printf("GOTHERE, PC = %d, Opcode = %s \n ", pc, lab);
+  int k;
+  int ret = 14;
+  for(k = 0; k < n; k++){
+    if(strcmp(lab, dataHold[k].name) == 0){
+      //printf("AND HERE: %s, %d\n", dataHold[k].name, dataHold[k].location);
+      int place = dataHold[k].location;
+      unsigned int lower = place & 0xff;
+      unsigned int upper = (place >> 8) & 0xff;
+      toLE(toHex("MOVI", lower, 1));
+      toLE(toHex("LUI", upper, 1));
+      pc = pc + 2;
+      return ret;
+    }
+  }
+  return 0;
+}
+
+void setdata(char *lab, int loc){
+  struct Label label;
+  label.name = lab;
+  label.location = loc;
+  dataHold[n] = label;
+  //printf("SETDATA: %s, LOCATION: %d \n", lab, loc);
+  n++;
 }
 
 int needLabel(char *op){
@@ -24,6 +54,7 @@ int needLabel(char *op){
   int k;
   for(k = 0; k < j; k++){
     if(strcmp(check, heldLoc[k].name) == 0){
+      free(check);
       return heldLoc[k].location;
     }
   }
