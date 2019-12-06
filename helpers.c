@@ -936,8 +936,8 @@ char* toHex(char *inOp, int src, int dest){
     rDest = iToC(src);
     immHi = '8';
     if(trigger){
-      unsigned int lower = src & 0xff;
-      unsigned int upper = (src >> 8) & 0xff;
+      unsigned int lower = dest & 0xff;
+      unsigned int upper = (dest >> 8) & 0xff;
       toLE(toHex("MOVI", lower, 1));
       toLE(toHex("LUI", upper, 1));
       pc = pc + 2;
