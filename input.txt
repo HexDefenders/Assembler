@@ -126,23 +126,23 @@ CheckCorrectness:
    jeq awardFourthPlayer; #  jump to award fourth player's point
 
    awardFirstPlayer:
-      movi 0x00, R11;   # assuming Player 1's point lives in memory location 0xb100
-      lui 0xB1, R11;
+      movi 0x8E, R11;   # assuming Player 1's point lives in memory location 0xb100
+      lui 0x00, R11;
       juc incrementPt;  # jump to increment point;
 
    awardSecPlayer:
-      movi 0x01, R11;   # assuming Player 2's point lives in memory location 0xb101
-      lui 0xB1, R11;
+      movi 0x8F, R11;   # assuming Player 2's point lives in memory location 0xb101
+      lui 0x00, R11;
       juc incrementPt;    # jump to increment point;
 
    awardThirdPlayer:
-      movi 0x02, R11;   # assuming Player 3's point lives in memory location 0xb102
-      lui 0xB1, R11;
+      movi 0x90, R11;   # assuming Player 3's point lives in memory location 0xb102
+      lui 0x00, R11;
       juc incrementPt;  # jump to increment point;
 
    awardFourthPlayer:
-      movi 0x03, R11;   # assuming Player 3's point lives in memory location 0xb103
-      lui 0xB1, R11;
+      movi 0x91, R11;   # assuming Player 3's point lives in memory location 0xb103
+      lui 0x00, R11;
       juc incrementPt;    # jump to increment point;
 
    incrementPt:

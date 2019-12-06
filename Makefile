@@ -9,3 +9,6 @@ lexer.c: lexer.l helpers.h
 
 parser.c: parser.y lexer.l helpers.h
 	bison parser.y
+
+clean: 
+	rm -f parser lexer.h lexer.c parser.h parser.c test.dat
