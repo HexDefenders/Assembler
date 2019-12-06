@@ -50,10 +50,10 @@ fill: OPCODE {}
 | OPCODE copyarg {}
 | OPCODE copyarg COMMA copyarg {}
 | OPCODE copyval {checkJump($1);}
-| OPCODE copyarg COMMA copyval {}
-| DATALAB HEXVAL {setdata($1, $2);}
+| OPCODE copyarg COMMA copyval {checkJump($1);}
+| DATALAB HEXVAL {setdata($1, $2); pc--;}
 ;
-copyarg: HEXVAL {} | REGISTER {} | DOL IMMEDIATE {} | DATALAB {}
+copyarg: HEXVAL {} | REGISTER {} | DOL IMMEDIATE {} | DATALAB {pc += 2;}
 ;
 copyval: GLAB {} | OPCODE {}
 ;
