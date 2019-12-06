@@ -27,8 +27,8 @@ int getaddr(char *lab){
       int place = dataHold[k].location;
       unsigned int lower = place & 0xff;
       unsigned int upper = (place >> 8) & 0xff;
-      toLE(toHex("MOVI", lower, 1));
-      toLE(toHex("LUI", upper, 1));
+      toLE(toHex("MOVI", lower, 14));
+      toLE(toHex("LUI", upper, 14));
       pc = pc + 2;
       return ret;
     }
